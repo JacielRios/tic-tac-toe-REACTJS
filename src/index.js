@@ -19,7 +19,6 @@ class Board extends React.Component {
       />
     );
   }
-
   render() {
     return (
       <div>
@@ -60,6 +59,8 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice()
+
+
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
@@ -84,7 +85,7 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    
+
     const moves = history.map((step, move) => {
       const desc = move ?
       `Ir al movimiento # ${move}` :
@@ -95,10 +96,14 @@ class Game extends React.Component {
         </li>
       );
     });
-
+    
     let status;
     if (winner) {
-      status = `Ganador: ${winner}`;
+      // const indexHistory = history[history.length - 1].squares;
+      // console.log(indexHistory);
+      // console.log(winner[1]);
+
+      status = `Ganador: ${winner[0]}`;
     } else {
       status = `Siguente turno: ${this.state.xIsNext ? "X" : "O"}`;
     }
@@ -111,14 +116,13 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <div className="title">{status}</div>
           <ol>{moves}</ol>
         </div>
       </div>
     );
   }
 }
-
 // ========================================
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -138,8 +142,9 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
+      const indexWinner = [a,b,c];
+      return [squares[a], indexWinner];
+    } 
   }
   return null;
 }
